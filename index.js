@@ -1,6 +1,8 @@
 const express = require('express')
-const { response } = require('express')
 const app = express()
+app.use(express.json())
+
+const MAX_ID_VALUE = 10000
 
 let persons = [
     {
@@ -63,6 +65,31 @@ app.delete('/api/persons/:id', (req, res) => {
 
     res.status(204).end()
 })
+
+
+const generateId = () => {
+  return (Math.floor(Math.random() * MAX_ID_VALUE)) 
+}
+// TO DO
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+    
+    if(!body.name && !body.number){
+      return res.status(400).json({
+        error: 'content missing'
+      })
+    }
+    
+    const person = {
+      name: body.name,
+      number: body.number,
+      id: generateId()
+    }
+    
+    persons = persons.concat(person)
+    res.json(person)
+})
+
 
 const PORT = 3001
 app.listen(PORT, () => {
