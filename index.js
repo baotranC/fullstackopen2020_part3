@@ -1,6 +1,8 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 app.use(express.json())
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 
 const MAX_ID_VALUE = 10000
 
@@ -70,7 +72,7 @@ app.delete('/api/persons/:id', (req, res) => {
 const generateId = () => {
   return (Math.floor(Math.random() * MAX_ID_VALUE)) 
 }
-// TO DO
+
 app.post('/api/persons', (req, res) => {
     const body = req.body
     const name = body.name.trim()
